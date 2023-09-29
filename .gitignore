@@ -1,4 +1,4 @@
 influxdb-data/
-./my-trader
+/my-trader
 
 .env
