@@ -11,3 +11,14 @@ A simple program written in Go to monitor data
 #+#       #+#   #+#                   #+#    #+#    #+##+#     #+##+#    #+##+#       #+#    #+# 
 ###       ###   ###                   ###    ###    ######     ############ #############    ### 
 ```
+
+## Quick Start
+
+```bash
+git clone https://github.com/mukappalambda/my-trader.git
+cd my-trader
+
+make env
+make install
+make run
+```
