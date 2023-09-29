@@ -1,0 +1,4 @@
+influxdb-data/
+./my-trader
+
+.env
