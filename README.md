@@ -18,7 +18,9 @@ A simple program written in Go to monitor data
 git clone https://github.com/mukappalambda/my-trader.git
 cd my-trader
 
-make env
-make install
-make run
+## run grpc server
+go run server/main.go
+
+## run grpc client
+go run client/main.go
 ```
