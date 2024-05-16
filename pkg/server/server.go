@@ -1,19 +1,20 @@
 package server
 
 import (
+	"fmt"
+
 	"github.com/mukappalambda/my-trader/pkg/config"
 	"github.com/mukappalambda/my-trader/pkg/web"
 	"github.com/sirupsen/logrus"
 )
 
-func StartServer() {
+func Run(addr string) error {
 	// read config from env
 	logrus.Info("Starting server...")
 
 	err := config.ReadFromEnv()
 	if err != nil {
-		logrus.Fatal(err)
-		return
+		return fmt.Errorf("error reading config: %q", err)
 	}
 
 	c := config.GetConfig()
@@ -24,8 +25,6 @@ func StartServer() {
 
 	logrus.Info("Reading config from env...")
 
-	// TODO: remove the hard-coded `mode`
-	mode := "dev"
-	app := web.NewApiServer(mode)
-	logrus.Fatal(app.Listen(":8080"))
+	app := web.NewApiServer()
+	return app.Listen(addr)
 }

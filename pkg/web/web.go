@@ -10,23 +10,28 @@ type ApiServer struct {
 	app *fiber.App
 }
 
-func NewApiServer(mode string) *ApiServer {
-	apiServer := new(ApiServer)
+func NewApiServer() *ApiServer {
 	app := fiber.New()
 	app.Use(cors.New())
 	app.Use(helmet.New())
 
-	apiServer.app = app
-	apiServer.Register(mode)
-	return apiServer
+	srv := &ApiServer{
+		app: app,
+	}
+	srv.Register("/healthcheck", healthHandler())
+	return srv
 }
 
 func (a *ApiServer) Listen(addr string) error {
 	return a.app.Listen(addr)
 }
 
-func (a *ApiServer) Register(mode string) {
-	a.app.Get("/healthcheck", func(c *fiber.Ctx) error {
+func (a *ApiServer) Register(path string, handlers ...fiber.Handler) {
+	a.app.Get(path, handlers...)
+}
+
+func healthHandler() fiber.Handler {
+	return func(c *fiber.Ctx) error {
 		return c.Send([]byte("healthy"))
-	})
+	}
 }
