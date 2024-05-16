@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package message;
+
+import "google/type/datetime.proto";
+
+option go_package = "github.com/mukappalambda/my-trader/proto/message/v1";
+
+service MessageService {
+  rpc PutMessage(MessageRequest) returns (MessageResponse) {}
+}
+
+message MessageRequest {
+  string message_id = 1;
+  string topic = 2;
+  string message = 3;
+  google.type.DateTime created_at = 4;
+}
+
+message MessageResponse {
+  string message = 1;
+}
