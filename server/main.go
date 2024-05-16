@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net"
 
@@ -19,18 +20,25 @@ type server struct {
 }
 
 func main() {
+	if err := run(&server{}); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run(srv pb.MessageServiceServer) error {
 	flag.Parse()
 
 	ln, err := net.Listen("tcp", *addr)
 	if err != nil {
-		log.Fatalf("failed to listen: %v\n", err)
+		return fmt.Errorf("failed to listen: %q", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterMessageServiceServer(s, &server{})
+	pb.RegisterMessageServiceServer(s, srv)
 	log.Printf("server listening at %v", ln.Addr())
 	if err := s.Serve(ln); err != nil {
-		log.Fatalf("failed to serve: %v\n", err)
+		return fmt.Errorf("failed to serve: %q", err)
 	}
+	return nil
 }
 
 func (s *server) PutMessage(ctx context.Context, in *pb.MessageRequest) (*pb.MessageResponse, error) {
