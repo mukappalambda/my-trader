@@ -9,6 +9,7 @@ import (
 
 	pb "github.com/mukappalambda/my-trader/gen/message/v1"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 var (
@@ -34,6 +35,7 @@ func run(srv pb.MessageServiceServer) error {
 	}
 	s := grpc.NewServer()
 	pb.RegisterMessageServiceServer(s, srv)
+	reflection.Register(s)
 	log.Printf("server listening at %v", ln.Addr())
 	if err := s.Serve(ln); err != nil {
 		return fmt.Errorf("failed to serve: %q", err)
