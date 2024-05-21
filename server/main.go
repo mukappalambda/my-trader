@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os/signal"
+	"syscall"
 
 	pb "github.com/mukappalambda/my-trader/gen/message/v1"
 	"google.golang.org/grpc"
@@ -38,9 +40,18 @@ func run(srv pb.MessageServiceServer) error {
 	pb.RegisterMessageServiceServer(s, srv)
 	reflection.Register(s)
 	log.Printf("server listening at %v", ln.Addr())
-	if err := s.Serve(ln); err != nil {
-		return fmt.Errorf("failed to serve: %q", err)
-	}
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+	go func() {
+		if err := s.Serve(ln); err != nil {
+			log.Fatalf("failed to serve: %q", err)
+		}
+	}()
+	<-ctx.Done()
+	stop()
+	log.Println("server shutting down...")
+	s.GracefulStop()
+	log.Println("server is down.")
 	return nil
 }
 
