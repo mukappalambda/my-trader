@@ -1,0 +1,10 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "internal/db/messages/query.sql"
+    schema: "internal/db/messages/schema.sql"
+    gen:
+      go:
+        package: "messages"
+        out: "internal/models/messages"
+        sql_package: "pgx/v5"
