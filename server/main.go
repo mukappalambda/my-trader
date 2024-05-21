@@ -9,7 +9,9 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/jackc/pgx/v5"
 	pb "github.com/mukappalambda/my-trader/gen/message/v1"
+	"github.com/mukappalambda/my-trader/internal/models/messages"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -20,10 +22,18 @@ var (
 
 type server struct {
 	pb.UnimplementedMessageServiceServer
+	queries *messages.Queries
 }
 
 func main() {
-	if err := run(&server{}); err != nil {
+	ctx := context.Background()
+	conn, err := pgx.Connect(ctx, "postgresql://postgres:password@localhost:5432/demo?sslmode=disable")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close(ctx)
+	queries := messages.New(conn)
+	if err := run(&server{queries: queries}); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -57,6 +67,13 @@ func run(srv pb.MessageServiceServer) error {
 
 func (s *server) PutMessage(ctx context.Context, in *pb.MessageRequest) (*pb.MessageResponse, error) {
 	log.Printf("received: topic: %q, message: %q, created_at: %q", in.GetTopic(), in.GetMessage(), in.GetCreatedAt())
+	_, err := s.queries.CreateMessage(ctx, messages.CreateMessageParams{
+		Topic:   in.GetTopic(),
+		Message: in.GetMessage(),
+	})
+	if err != nil {
+		return nil, err
+	}
 	return &pb.MessageResponse{
 		Message: "hello" + in.GetMessage(),
 	}, nil
