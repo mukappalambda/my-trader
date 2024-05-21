@@ -33,6 +33,7 @@ func run(srv pb.MessageServiceServer) error {
 	if err != nil {
 		return fmt.Errorf("failed to listen: %q", err)
 	}
+	defer ln.Close()
 	s := grpc.NewServer()
 	pb.RegisterMessageServiceServer(s, srv)
 	reflection.Register(s)
