@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"time"
 
@@ -13,7 +14,7 @@ import (
 )
 
 var (
-	addr    = flag.String("addr", "localhost:50051", "the address to connect to")
+	port    = flag.Int("port", 50051, "the server port to connect to")
 	topic   = flag.String("topic", "test-topic", "topic")
 	message = flag.String("message", "test-message", "message")
 )
@@ -21,7 +22,7 @@ var (
 func main() {
 	flag.Parse()
 
-	conn, err := grpc.NewClient(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(fmt.Sprintf(":%d", *port), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}

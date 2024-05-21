@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	addr = flag.String("addr", ":50051", "server address")
+	port = flag.Int("port", 50051, "server port")
 )
 
 type server struct {
@@ -29,7 +29,7 @@ func main() {
 func run(srv pb.MessageServiceServer) error {
 	flag.Parse()
 
-	ln, err := net.Listen("tcp", *addr)
+	ln, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
 		return fmt.Errorf("failed to listen: %q", err)
 	}
