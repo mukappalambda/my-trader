@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 	"os/signal"
 	"syscall"
 
@@ -23,21 +24,33 @@ type server struct {
 	queries *messages.Queries
 }
 
+type App struct {
+	*server
+	connString string
+}
+
 func main() {
-	ctx := context.Background()
-	conn, err := pgx.Connect(ctx, "postgresql://postgres:password@localhost:5432/demo?sslmode=disable")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer conn.Close(ctx)
-	queries := messages.New(conn)
-	if err := run(&server{queries: queries}); err != nil {
+	app := NewApp()
+	if err := app.Run(); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func run(srv pb.MessageServiceServer) error {
+func NewApp() *App {
+	connString := os.Getenv("DATABASE_URL")
+	return &App{connString: connString}
+}
+
+func (a *App) Run() error {
 	flag.Parse()
+	ctx := context.Background()
+	conn, err := pgx.Connect(ctx, a.connString)
+	if err != nil {
+		return fmt.Errorf("failed to connect to database: %w", err)
+	}
+	defer conn.Close(ctx)
+	queries := messages.New(conn)
+	a.server = &server{queries: queries}
 
 	ln, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
@@ -45,7 +58,7 @@ func run(srv pb.MessageServiceServer) error {
 	}
 	defer ln.Close()
 	s := grpc.NewServer()
-	pb.RegisterMessageServiceServer(s, srv)
+	pb.RegisterMessageServiceServer(s, a.server)
 	reflection.Register(s)
 	log.Printf("server listening at %v", ln.Addr())
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
