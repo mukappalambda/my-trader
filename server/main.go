@@ -16,9 +16,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var (
-	port = flag.Int("port", 50051, "server port")
-)
+var port = flag.Int("port", 50051, "server port")
 
 type server struct {
 	pb.UnimplementedMessageServiceServer
