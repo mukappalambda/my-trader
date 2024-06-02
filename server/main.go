@@ -14,6 +14,8 @@ import (
 	pb "github.com/mukappalambda/my-trader/gen/message/v1"
 	"github.com/mukappalambda/my-trader/internal/models/messages"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthgrpc "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 )
 
@@ -57,8 +59,12 @@ func (a *App) Run() error {
 		return fmt.Errorf("failed to listen: %q", err)
 	}
 	defer ln.Close()
+	healthcheck := health.NewServer()
 	s := grpc.NewServer()
+
+	healthgrpc.RegisterHealthServer(s, healthcheck)
 	pb.RegisterMessageServiceServer(s, a.server)
+
 	reflection.Register(s)
 	log.Printf("server listening at %v", ln.Addr())
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
