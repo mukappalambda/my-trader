@@ -7,5 +7,5 @@ import (
 )
 
 type MessageService interface {
-	PutMessage(ctx context.Context, msg *entities.Message) (v interface{}, err error)
+	PublishMessage(ctx context.Context, msg *entities.Message) (v interface{}, err error)
 }
