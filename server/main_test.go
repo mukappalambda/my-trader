@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
+	grpcAdapter "github.com/mukappalambda/my-trader/internal/adapters/grpc"
+	pb "github.com/mukappalambda/my-trader/internal/adapters/grpc/message/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-
-	pb "github.com/mukappalambda/my-trader/gen/message/v1"
 )
 
 func TestMessageService(t *testing.T) {
@@ -25,7 +25,7 @@ func TestMessageService(t *testing.T) {
 	t.Cleanup(func() {
 		s.Stop()
 	})
-	pb.RegisterMessageServiceServer(s, &server{})
+	pb.RegisterMessageServiceServer(s, &grpcAdapter.GrpcServer{})
 	go func() {
 		log.Println(ln.Addr().String())
 		if err := s.Serve(ln); err != nil {
