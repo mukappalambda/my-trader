@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	pb "github.com/mukappalambda/my-trader/gen/message/v1"
+	pb "github.com/mukappalambda/my-trader/internal/adapters/grpc/message/v1"
 	"google.golang.org/genproto/googleapis/type/datetime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
