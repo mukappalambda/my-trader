@@ -17,16 +17,24 @@ A simple program written in Go to monitor data
 ```bash
 git clone https://github.com/mukappalambda/my-trader.git
 cd my-trader
+```
 
+**Build from source**
+
+```bash
+make build
+```
+
+```bash
 ## spin up the database container
 bash scripts/run.sh
 
 ## run grpc server
 export DATABASE_URL=postgresql://postgres:password@localhost:5432/demo?sslmode=disable
-go run server/main.go
+./my-trader-server
 
 ## run grpc client
-go run client/main.go
+./my-trader-client
 ```
 
 You can also use [grpcurl](https://github.com/fullstorydev/grpcurl) to interact with the server.
