@@ -6,12 +6,14 @@ APP_NAME=my-trader
 
 clean:
 	@${GO} clean
+	@rm -f ./${APP_NAME}-server ./${APP_NAME}-client
 
 env:
 	@cp .env.example .env
 
 build:
-	@${GO} build ./cmd/...
+	@${GO} build -o ./${APP_NAME}-server ./server/main.go
+	@${GO} build -o ./${APP_NAME}-client ./client/main.go
 
 install:
 	@${GO} install ./...
