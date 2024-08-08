@@ -13,6 +13,9 @@ type SchemaRegistryServer struct {
 	Engine *gin.Engine
 }
 
+// TODO: replace the in-memory database later
+var schemas = make([]types.Schema, 0)
+
 func NewSchemaRegistryServer(ginMode string) (*SchemaRegistryServer, error) {
 	if ginMode != "debug" && ginMode != "release" {
 		return nil, fmt.Errorf("got invalid gin mode: %q (want 'debug' or 'release')", ginMode)
@@ -56,7 +59,6 @@ func HandlerNotFound() gin.HandlerFunc {
 
 func GetAllSchemas() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var schemas []types.Schema
 		c.JSON(http.StatusOK, schemas)
 	}
 }
@@ -70,6 +72,8 @@ func NewSchema() gin.HandlerFunc {
 			})
 			return
 		}
+		(&schema).SetId(fmt.Sprintf("%d", len(schemas)+1))
+		schemas = append(schemas, schema)
 		c.JSON(http.StatusCreated, schema)
 	}
 }

@@ -7,9 +7,20 @@ type Field struct {
 }
 
 type Schema struct {
-	Id      string  `json:"id"`
+	Id      string  `json:"id,omitempty"`
 	Subject string  `json:"subject"`
 	Name    string  `json:"name"`
 	Doc     string  `json:"doc"`
 	Fields  []Field `json:"fields"`
+}
+
+var DefaultSchema = &Schema{
+	Subject: "",
+	Name:    "",
+	Doc:     "",
+	Fields:  []Field{{Name: "", Type: "", Doc: ""}},
+}
+
+func (s *Schema) SetId(id string) {
+	s.Id = id
 }
