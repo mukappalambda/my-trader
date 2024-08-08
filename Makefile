@@ -13,7 +13,7 @@ env:
 
 build:
 	@${GO} build -o ./${APP_NAME}-server ./server/main.go
-	@${GO} build -o ./${APP_NAME}-client ./client/main.go
+	@${GO} build -o ./${APP_NAME}-cli ./client/main.go
 
 install:
 	@${GO} install ./...
