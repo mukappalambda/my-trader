@@ -1,19 +1,22 @@
 package commands
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"time"
+
 	pb "github.com/mukappalambda/my-trader/internal/adapters/grpc/message/v1"
 	"github.com/mukappalambda/my-trader/internal/adapters/rest/types"
 	"github.com/spf13/cobra"
 	"google.golang.org/genproto/googleapis/type/datetime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"io"
-	"log"
-	"os"
-	"time"
 )
 
 func RunApply(cmd *cobra.Command, args []string) {
@@ -39,8 +42,32 @@ func RunApply(cmd *cobra.Command, args []string) {
 	fmt.Printf("%+v\n", schema)
 
 	srUrl, _ := cmd.Flags().GetString("schema-registry-url")
-	fmt.Println("add schema calld")
-	fmt.Println(srUrl)
+	buf, err := json.Marshal(schema)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("%s/schemas", srUrl), bytes.NewBuffer(buf))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	client := &http.Client{
+		Timeout: 200 * time.Millisecond,
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	fmt.Println(string(body))
 }
 
 func RunGenerate(cmd *cobra.Command, args []string) {
