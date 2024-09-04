@@ -7,7 +7,7 @@ import (
 var schemasCmd = &cobra.Command{
 	Use:     "schemas",
 	Aliases: []string{"schema", "sche", "sch"},
-	Short:   "A brief description of your command",
+	Short:   "Communicate with the schema registry service",
 	Long:    ``,
 }
 
