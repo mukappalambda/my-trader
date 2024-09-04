@@ -41,7 +41,6 @@ func RunApply(cmd *cobra.Command, args []string) {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-	fmt.Printf("%+v\n", schema)
 
 	srUrl, _ := cmd.Flags().GetString("schema-registry-url")
 	buf, err := json.Marshal(schema)
