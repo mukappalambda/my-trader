@@ -73,7 +73,7 @@ func RunApply(cmd *cobra.Command, args []string) {
 }
 
 func RunGenerate(cmd *cobra.Command, args []string) {
-	byt, err := json.MarshalIndent(types.DefaultSchema, "", " ")
+	byt, err := json.MarshalIndent(types.DefaultSchema, "", "  ")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to serialize schema: %v\n", err)
 	}
