@@ -16,7 +16,8 @@ var applyCmd = &cobra.Command{
 }
 
 func init() {
-	applyCmd.Flags().StringP("filename", "f", "", "filename")
+	applyCmd.Flags().StringP("filename", "f", "", "filename (required)")
+	_ = applyCmd.MarkFlagRequired("filename")
 	applyCmd.Flags().String("schema-registry-url", "http://localhost:8081", "schema registry url")
 	err := viper.BindPFlag("filename", applyCmd.Flags().Lookup("filename"))
 	common.PrintToStderrThenExit(err)
