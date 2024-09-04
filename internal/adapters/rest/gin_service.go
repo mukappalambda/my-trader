@@ -59,6 +59,31 @@ func HandlerNotFound() gin.HandlerFunc {
 
 func GetAllSchemas() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		subject := c.Query("subject")
+		if subject != "" {
+			want := make([]types.Schema, 0)
+			for _, sch := range schemas {
+				if sch.Subject == subject {
+					want = append(want, sch)
+				}
+			}
+			c.JSON(http.StatusOK, want)
+			return
+		}
+
+		name := c.Query("name")
+		if name != "" {
+			var want types.Schema
+			for _, sch := range schemas {
+				if sch.Name == name {
+					want = sch
+					c.JSON(http.StatusOK, want)
+					return
+				}
+			}
+			c.JSON(http.StatusNotFound, nil)
+			return
+		}
 		c.JSON(http.StatusOK, schemas)
 	}
 }
