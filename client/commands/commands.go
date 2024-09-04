@@ -146,6 +146,28 @@ func RunGet(cmd *cobra.Command, args []string) {
 	fmt.Println(string(body))
 }
 
+func RunCheck(cmd *cobra.Command, args []string) {
+	filename, _ := cmd.Flags().GetString("filename")
+	file, err := os.Open(filename)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to open %q: %v\n", filename, err)
+		os.Exit(1)
+	}
+	defer file.Close()
+	byt, err := io.ReadAll(file)
+	common.PrintToStderrThenExit(err)
+
+	var schema types.Schema
+	err = json.Unmarshal(byt, &schema)
+	common.PrintToStderrThenExit(err)
+	if schema.Name == "" || schema.Subject == "" {
+		fmt.Fprintln(os.Stderr, `Field names "schema" and "subject" cannot be empty.`)
+		os.Exit(1)
+	} else {
+		fmt.Println("Checked!")
+	}
+}
+
 func toDateTime(t time.Time) *datetime.DateTime {
 	return &datetime.DateTime{
 		Year:    int32(t.Year()),
