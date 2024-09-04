@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/mukappalambda/my-trader/client/commands"
+	"github.com/mukappalambda/my-trader/client/common"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var getCmd = &cobra.Command{
@@ -11,11 +12,19 @@ var getCmd = &cobra.Command{
 	Aliases: []string{"list"},
 	Short:   "Retrieve the schemas",
 	Long:    ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("schema get called")
-	},
+	Run:     commands.RunGet,
 }
 
 func init() {
+	getCmd.Flags().String("subject", "", "subject of schema")
+	getCmd.Flags().StringP("name", "n", "", "name of schema")
+	getCmd.Flags().String("schema-registry-url", "http://localhost:8081", "schema registry url")
+
+	err := viper.BindPFlag("subject", getCmd.Flags().Lookup("subject"))
+	common.PrintToStderrThenExit(err)
+	err = viper.BindPFlag("name", getCmd.Flags().Lookup("name"))
+	common.PrintToStderrThenExit(err)
+	err = viper.BindPFlag("schema-registry-url", getCmd.Flags().Lookup("schema-registry-url"))
+	common.PrintToStderrThenExit(err)
 	schemasCmd.AddCommand(getCmd)
 }

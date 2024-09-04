@@ -8,9 +8,11 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 
+	"github.com/mukappalambda/my-trader/client/common"
 	pb "github.com/mukappalambda/my-trader/internal/adapters/grpc/message/v1"
 	"github.com/mukappalambda/my-trader/internal/adapters/rest/types"
 	"github.com/spf13/cobra"
@@ -116,6 +118,34 @@ func RunSend(cmd *cobra.Command, args []string) {
 	log.Printf("Greeting: %s", r.GetMessage())
 
 }
+
+func RunGet(cmd *cobra.Command, args []string) {
+	srUrl, _ := cmd.Flags().GetString("schema-registry-url")
+	subject, _ := cmd.Flags().GetString("subject")
+	name, _ := cmd.Flags().GetString("name")
+
+	k := "subject"
+	v := subject
+	if name != "" {
+		k = "name"
+		v = name
+	}
+
+	params := url.Values{}
+	params.Set(k, v)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/schemas?%s", srUrl, params.Encode()), nil)
+	common.PrintToStderrThenExit(err)
+	client := &http.Client{
+		Timeout: 200 * time.Millisecond,
+	}
+	resp, err := client.Do(req)
+	common.PrintToStderrThenExit(err)
+	defer resp.Body.Close()
+	body, err := io.ReadAll(resp.Body)
+	common.PrintToStderrThenExit(err)
+	fmt.Println(string(body))
+}
+
 func toDateTime(t time.Time) *datetime.DateTime {
 	return &datetime.DateTime{
 		Year:    int32(t.Year()),
