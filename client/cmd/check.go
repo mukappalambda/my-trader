@@ -11,7 +11,10 @@ var checkCmd = &cobra.Command{
 	Use:   "check",
 	Short: "Validate a schema",
 	Long:  ``,
-	Run:   commands.RunCheck,
+	Example: `
+- my-trader-cli schemas check -f example-schema.json
+	`,
+	Run: commands.RunCheck,
 }
 
 func init() {

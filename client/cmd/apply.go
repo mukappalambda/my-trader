@@ -12,7 +12,10 @@ var applyCmd = &cobra.Command{
 	Aliases: []string{"add"},
 	Short:   "Apply a configuration to a schema by file name or stdin",
 	Long:    ``,
-	Run:     commands.RunApply,
+	Example: `
+- my-trader-cli apply -f example-schema.json
+	`,
+	Run: commands.RunApply,
 }
 
 func init() {
