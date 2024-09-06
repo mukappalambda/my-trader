@@ -11,7 +11,10 @@ var sendCmd = &cobra.Command{
 	Use:   "send",
 	Short: "",
 	Long:  ``,
-	Run:   commands.RunSend,
+	Example: `
+- my-trader-cli send -t my-topic -m '{"rank": 10}' --schema my-schema
+	`,
+	Run: commands.RunSend,
 }
 
 func init() {

@@ -12,7 +12,12 @@ var getCmd = &cobra.Command{
 	Aliases: []string{"list"},
 	Short:   "Retrieve the schemas",
 	Long:    ``,
-	Run:     commands.RunGet,
+	Example: `
+- my-trader-cli schemas get
+- my-trader-cli schemas get --subject foo
+- my-trader-cli schemas get --name bar
+	`,
+	Run: commands.RunGet,
 }
 
 func init() {
