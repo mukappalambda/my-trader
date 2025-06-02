@@ -12,7 +12,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/mukappalambda/my-trader/client/common"
+	"github.com/mukappalambda/my-trader/cmd/my-trader-cli/common"
 	pb "github.com/mukappalambda/my-trader/internal/adapters/grpc/message/v1"
 	"github.com/mukappalambda/my-trader/internal/adapters/rest/types"
 	"github.com/spf13/cobra"

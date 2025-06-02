@@ -31,10 +31,10 @@ bash scripts/run.sh
 
 ## run grpc server
 export DATABASE_URL=postgresql://postgres:password@localhost:5432/demo?sslmode=disable
-./my-trader-server
+./bin/my-trader-server
 
 ## run my-trader-cli
-./my-trader-cli send -t 'my-topic' -m 'my-message'
+./bin/my-trader-cli send -t 'my-topic' -m 'my-message'
 ```
 
 You can also use [grpcurl](https://github.com/fullstorydev/grpcurl) to interact with the server.
