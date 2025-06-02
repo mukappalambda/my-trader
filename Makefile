@@ -8,15 +8,16 @@ help: ## Show help message
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
 
 clean: ## Remove build artifacts and temporary files
-	@${GO} clean
-	@rm -f ./${APP_NAME}-server ./${APP_NAME}-client
+	@echo "$(WHALE) $@"
+	@rm -rf bin
 
 env:
 	@cp .env.example .env
 
-build: ## Build the binaries
-	@${GO} build -o ./${APP_NAME}-server ./server/main.go
-	@${GO} build -o ./${APP_NAME}-cli ./client/main.go
+build: clean ## Build the binaries
+	@echo "$(WHALE) $@"
+	@${GO} build -o bin/${APP_NAME}-server cmd/my-trader-server/main.go
+	@${GO} build -o bin/${APP_NAME}-cli cmd/my-trader-cli/main.go
 
 install: ## Install the binaries
 	@${GO} install ./...

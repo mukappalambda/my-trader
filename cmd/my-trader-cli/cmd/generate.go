@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/mukappalambda/my-trader/client/commands"
-	"github.com/mukappalambda/my-trader/client/common"
+	"github.com/mukappalambda/my-trader/cmd/my-trader-cli/commands"
+	"github.com/mukappalambda/my-trader/cmd/my-trader-cli/common"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

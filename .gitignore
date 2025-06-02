@@ -1,5 +1,4 @@
 influxdb-data/
-/my-trader
-my-trader-[a-z]*
 
+bin/
 .env
