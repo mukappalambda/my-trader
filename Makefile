@@ -19,6 +19,10 @@ build: clean ## Build the binaries
 	@${GO} build -o bin/${APP_NAME}-server cmd/my-trader-server/main.go
 	@${GO} build -o bin/${APP_NAME}-cli cmd/my-trader-cli/main.go
 
+lint: ## Run golangci-lint
+	@echo "$(WHALE) $@"
+	@golangci-lint run ./...
+
 install: ## Install the binaries
 	@${GO} install ./...
 
