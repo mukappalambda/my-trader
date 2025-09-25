@@ -15,7 +15,7 @@ var applyCmd = &cobra.Command{
 	Example: `
 - my-trader-cli apply -f example-schema.json
 	`,
-	Run: commands.RunApply,
+	RunE: commands.RunApply,
 }
 
 func init() {

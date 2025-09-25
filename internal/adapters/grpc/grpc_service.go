@@ -73,7 +73,8 @@ func (s *GrpcServer) Run(port int) error {
 func (s *GrpcServer) RunWithContext(ctx context.Context, port int) error {
 	defer s.conn.Close(ctx)
 
-	ln, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	var lc net.ListenConfig
+	ln, err := lc.Listen(ctx, "tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		return fmt.Errorf("failed to listen: %q", err)
 	}
