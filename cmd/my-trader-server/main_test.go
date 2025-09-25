@@ -14,7 +14,8 @@ import (
 )
 
 func TestMessageService(t *testing.T) {
-	ln, err := net.Listen("tcp", ":")
+	var lc net.ListenConfig
+	ln, err := lc.Listen(t.Context(), "tcp", ":")
 	if err != nil {
 		t.Fatalf("failed to listen: %q", err)
 	}

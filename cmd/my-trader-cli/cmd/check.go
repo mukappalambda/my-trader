@@ -14,7 +14,7 @@ var checkCmd = &cobra.Command{
 	Example: `
 - my-trader-cli schemas check -f example-schema.json
 	`,
-	Run: commands.RunCheck,
+	RunE: commands.RunCheck,
 }
 
 func init() {
