@@ -10,11 +10,13 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"runtime"
 	"time"
 
 	"github.com/mukappalambda/my-trader/cmd/my-trader-cli/common"
 	pb "github.com/mukappalambda/my-trader/internal/adapters/grpc/message/v1"
 	"github.com/mukappalambda/my-trader/internal/adapters/rest/types"
+	"github.com/mukappalambda/my-trader/version"
 	"github.com/spf13/cobra"
 	"google.golang.org/genproto/googleapis/type/datetime"
 	"google.golang.org/grpc"
@@ -200,6 +202,19 @@ func RunCheck(cmd *cobra.Command, args []string) error {
 		return errors.New(`field names "schema" and "subject" cannot be empty.Field names "schema" and "subject" cannot be empty.Field names "schema" and "subject" cannot be empty`)
 	}
 	fmt.Println("Checked!")
+	return nil
+}
+
+var name = `
+                  __              __                ___
+  __ _  __ ______/ /________ ____/ /__ ____________/ (_)
+ /  ' \/ // /___/ __/ __/ _ ` + "`" + `/ _  / -_) __/___/ __/ / /
+/_/_/_/\_, /    \__/_/  \_,_/\_,_/\__/_/      \__/_/_/
+      /___/
+`
+
+func RunVersion(cmd *cobra.Command, args []string) error {
+	fmt.Printf("\033[31m%s\033[0m\n%s built with %s from %s on %s\n", name, version.Version, runtime.Version(), version.Commit, version.Date)
 	return nil
 }
 
