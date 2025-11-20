@@ -1,10 +1,14 @@
 GO ?= go
-VERSION ?= $(shell git describe --tags --abbrev=0 2> /dev/null || echo "dev")
-COMMIT  := $(shell git rev-parse --short HEAD)
-DATE    := $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
-LDFLAGS := -X 'github.com/mukappalambda/my-trader/version.Version=$(VERSION)' \
-	-X 'github.com/mukappalambda/my-trader/version.Commit=$(COMMIT)' \
-	-X 'github.com/mukappalambda/my-trader/version.Date=$(DATE)'
+GIT_VERSION := $(shell git --version | awk '{print $$3}')
+GIT_COMMIT  := $(shell git rev-parse HEAD)
+BUILD_DATE  := $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
+USERNAME := mukappalambda
+REPO_NAME := my-trader
+REPO_URL := https://github.com/${USERNAME}/${REPO_NAME}
+LDFLAGS := -X 'github.com/mukappalambda/my-trader/version.GitVersion=$(GIT_VERSION)' \
+	-X 'github.com/mukappalambda/my-trader/version.GitCommit=$(GIT_COMMIT)' \
+	-X 'github.com/mukappalambda/my-trader/version.BuildDate=$(BUILD_DATE)' \
+	-X 'github.com/mukappalambda/my-trader/version.RepoUrl=$(REPO_URL)'
 
 APP_NAME=my-trader
 

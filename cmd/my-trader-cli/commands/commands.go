@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"runtime"
 	"time"
 
 	"github.com/mukappalambda/my-trader/cmd/my-trader-cli/common"
@@ -214,7 +213,7 @@ var name = `
 `
 
 func RunVersion(cmd *cobra.Command, args []string) error {
-	fmt.Printf("\033[31m%s\033[0m\n%s built with %s from %s on %s\n", name, version.Version, runtime.Version(), version.Commit, version.Date)
+	version.Version(name)
 	return nil
 }
 
