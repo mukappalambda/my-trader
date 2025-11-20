@@ -30,7 +30,7 @@ bash scripts/run.sh
 
 ## run grpc server
 export DATABASE_URL=postgresql://postgres:password@localhost:5432/demo?sslmode=disable
-./bin/my-trader-server
+./bin/my-trader-server run
 
 ## run my-trader-cli
 ./bin/my-trader-cli send -t 'my-topic' -m 'my-message'
