@@ -1,5 +1,10 @@
 # My Trader
 
+[![Dependabot Updates](https://github.com/mukappalambda/my-trader/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/mukappalambda/my-trader/actions/workflows/dependabot/dependabot-updates)
+[![golangci-lint](https://github.com/mukappalambda/my-trader/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/mukappalambda/my-trader/actions/workflows/golangci-lint.yml)
+[![Security Scan](https://github.com/mukappalambda/my-trader/actions/workflows/scan.yml/badge.svg)](https://github.com/mukappalambda/my-trader/actions/workflows/scan.yml)
+[![Vuln Check](https://github.com/mukappalambda/my-trader/actions/workflows/vulncheck.yml/badge.svg)](https://github.com/mukappalambda/my-trader/actions/workflows/vulncheck.yml)
+
 A simple program written in Go to monitor data
 
 ```bash
