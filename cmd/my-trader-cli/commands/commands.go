@@ -111,10 +111,10 @@ func RunSend(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("could not deserialize to the given schema: %v", err)
 	}
-	var result map[string]interface{}
+	var result map[string]any
 	err = json.Unmarshal([]byte(message), &result)
 	common.PrintToStderrThenExit(err)
-	collected := make(map[string]interface{})
+	collected := make(map[string]any)
 	for _, field := range schema.Fields {
 		if field.Type == "double" {
 			if value, ok := result[field.Name].(float64); ok {
@@ -219,12 +219,12 @@ func RunVersion(cmd *cobra.Command, args []string) error {
 
 func toDateTime(t time.Time) *datetime.DateTime {
 	return &datetime.DateTime{
-		Year:    int32(t.Year()),       //nolint
-		Month:   int32(t.Month()),      //nolint
-		Day:     int32(t.Day()),        //nolint
-		Hours:   int32(t.Hour()),       //nolint
-		Minutes: int32(t.Minute()),     //nolint
-		Seconds: int32(t.Second()),     //nolint
-		Nanos:   int32(t.Nanosecond()), //nolint
+		Year:    int32(t.Year()),
+		Month:   int32(t.Month()),
+		Day:     int32(t.Day()),
+		Hours:   int32(t.Hour()),
+		Minutes: int32(t.Minute()),
+		Seconds: int32(t.Second()),
+		Nanos:   int32(t.Nanosecond()),
 	}
 }
