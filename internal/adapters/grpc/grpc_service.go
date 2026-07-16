@@ -43,7 +43,7 @@ func NewGrpcServerWithContext(ctx context.Context, dsn string) (*GrpcServer, err
 
 var _ ports.MessageService = (*GrpcServer)(nil)
 
-func (s *GrpcServer) PublishMessage(ctx context.Context, msg *entities.Message) (v interface{}, err error) {
+func (s *GrpcServer) PublishMessage(ctx context.Context, msg *entities.Message) (v any, err error) {
 	in := &pb.MessageRequest{
 		Topic:   msg.Topic,
 		Message: msg.Message,
